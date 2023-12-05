@@ -1,0 +1,36 @@
+name: Test
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test with ${{ matrix.py }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        py:
+          - "3.11"
+          - "3.10"
+          - "3.9"
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup python for test ${{ matrix.py }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.py }}
+
+      - name: Install tox
+        run: python -m pip install tox-gh>=4
+
+      - name: Run test suite
+        run: tox run

@@ -1,0 +1,11 @@
+# ignore idea files
+**/.idea
+**/*.iml
+
+# ignore local python env
+env/
+venv/
+
+dist/
+
+.tox

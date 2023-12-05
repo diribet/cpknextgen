@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cpknextgen"
+version = "1.0.0"
+authors = [
+	{ name = "Stanislav Král", email = "stanislav.kral@diribet.cz" },
+	{ name = "Jaroslav Staněk", email = "jaroslav.stanek@diribet.cz" },
+	{ name = "Helena Paulasová", email = "helena.paulasova@diribet.cz" },
+	{ name = "Vlastimil Dolejš", email = "vlastimil.dolejs@diribet.cz" },
+]
+description = "Cpk NextGen"
+license = { text = "MIT License" }
+keywords = ["Cp", "Cpk", "Process capability"]
+readme = "README.md"
+classifiers = [
+	"Programming Language :: Python :: 3",
+	"License :: OSI Approved :: MIT License",
+	"Operating System :: OS Independent",
+	"Intended Audience :: Manufacturing",
+]
+requires-python = ">=3.9"
+dependencies = [
+	'numpy>=1.21,<1.27',
+	'scipy>=1.10,<1.15',
+	'numba>=0.55.0',
+	'scikit-learn>=1.0'
+]
+
+[project.urls]
+Homepage = "https://github.com/diribet/cpknextgen"
+Issues = "https://github.com/diribet/cpknextgen/issues"
+
+[project.optional-dependencies]
+test = [
+	"pytest>=7",
+	"pytest-sugar>=0.9"
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+	"src"
+]
