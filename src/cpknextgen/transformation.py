@@ -190,7 +190,7 @@ class Transformation:
         if len(np.unique(self.boundaryless_data)) < 3 and jitter_kernel == 'no_jitter':
             raise InvalidDataError("More unique values are required to calculate capability indexes.")
 
-        self.lower_helping_limit, self.upper_helping_limit, self.standard_computation = self._check_limits(
+        self.lower_normalization_limit, self.upper_normalization_limit, self.standard_computation = self._check_limits(
             self.boundaryless_data,
             lower_specification_limit,
             upper_specification_limit,
@@ -198,21 +198,21 @@ class Transformation:
             lower_boundary,
             upper_boundary)
 
-        self.lower_helping_limit_transformed = None
-        self.upper_helping_limit_transformed = None
+        self.lower_normalization_limit_transformed = None
+        self.upper_normalization_limit_transformed = None
 
         self.lower_boundary_transformed = None
         self.upper_boundary_transformed = None
 
         self.specification_to_boundaries = self.relative_to_boundaries(
-            np.array([self.lower_helping_limit, self.upper_helping_limit]))
+            np.array([self.lower_normalization_limit, self.upper_normalization_limit]))
 
         data_relative_to_boundaries = self.relative_to_boundaries(self.boundaryless_data)
         data_to_specification_1 = self.relative_to_specification(data_relative_to_boundaries, order=1)
         self.yeojohnson = YeoJohnson(data_to_specification_1)
 
         specifications_to_specification_1 = np.array([-1, 1])
-        self.lower_helping_limit_transformed, self.upper_helping_limit_transformed = self.yeojohnson.transform(
+        self.lower_normalization_limit_transformed, self.upper_normalization_limit_transformed = self.yeojohnson.transform(
             specifications_to_specification_1)
 
         self.data_transformed = self.do_transform(self.boundaryless_data)
@@ -233,30 +233,30 @@ class Transformation:
         if len(limit_quantiles) != 2:
             limit_quantiles = (0.01, 0.99)
 
-        lower_helping_limit = np.quantile(data, limit_quantiles[
+        lower_normalization_limit = np.quantile(data, limit_quantiles[
             0], method="inverted_cdf") if lower_specification_limit is None else lower_specification_limit
-        upper_helping_limit = np.quantile(data, limit_quantiles[
+        upper_normalization_limit = np.quantile(data, limit_quantiles[
             1], method="inverted_cdf") if upper_specification_limit is None else upper_specification_limit
 
-        if lower_helping_limit >= upper_helping_limit:
+        if lower_normalization_limit >= upper_normalization_limit:
             standard_computation = False
             if len(np.unique(data)) > 1:
                 if lower_specification_limit is None:
                     if lower_boundary is None:
-                        lower_helping_limit = np.min([lower_helping_limit, upper_helping_limit]) - np.min(
+                        lower_normalization_limit = np.min([lower_normalization_limit, upper_normalization_limit]) - np.min(
                             np.diff(np.sort(np.unique(data))))
                     else:
-                        lower_helping_limit = np.max([np.min([lower_helping_limit, upper_helping_limit]) - np.min(
+                        lower_normalization_limit = np.max([np.min([lower_normalization_limit, upper_normalization_limit]) - np.min(
                             np.diff(np.sort(np.unique(data)))), lower_boundary])
                 if upper_specification_limit is None:
                     if upper_boundary is None:
-                        upper_helping_limit = np.max([lower_helping_limit, upper_helping_limit]) + np.min(
+                        upper_normalization_limit = np.max([lower_normalization_limit, upper_normalization_limit]) + np.min(
                             np.diff(np.sort(np.unique(data))))
                     else:
-                        upper_helping_limit = np.min([np.max([lower_helping_limit, upper_helping_limit]) + np.min(
+                        upper_normalization_limit = np.min([np.max([lower_normalization_limit, upper_normalization_limit]) + np.min(
                             np.diff(np.sort(np.unique(data)))), upper_boundary])
 
-        return lower_helping_limit, upper_helping_limit, standard_computation
+        return lower_normalization_limit, upper_normalization_limit, standard_computation
 
     def relative_to_boundaries(self, data, inverse=False):
         max_bound = 30
@@ -299,34 +299,34 @@ class Transformation:
             return k / (data - self.lower_boundary) / (self.upper_boundary - data)
 
     def relative_to_specification(self, data, inverse=False, order=2):
-        lower_helping_limit_transformed = self.lower_helping_limit_transformed
-        upper_helping_limit_transformed = self.upper_helping_limit_transformed
+        lower_normalization_limit_transformed = self.lower_normalization_limit_transformed
+        upper_normalization_limit_transformed = self.upper_normalization_limit_transformed
 
         if order == 1:
-            lower_helping_limit_transformed = self.specification_to_boundaries[0]
-            upper_helping_limit_transformed = self.specification_to_boundaries[1]
+            lower_normalization_limit_transformed = self.specification_to_boundaries[0]
+            upper_normalization_limit_transformed = self.specification_to_boundaries[1]
 
-        if lower_helping_limit_transformed is None or upper_helping_limit_transformed is None:
+        if lower_normalization_limit_transformed is None or upper_normalization_limit_transformed is None:
             return data
 
-        _diff = upper_helping_limit_transformed - lower_helping_limit_transformed
+        _diff = upper_normalization_limit_transformed - lower_normalization_limit_transformed
         if not inverse:
-            return (2 * (data - lower_helping_limit_transformed) / _diff) - 1
+            return (2 * (data - lower_normalization_limit_transformed) / _diff) - 1
         else:
-            return (data + 1) / 2 * _diff + lower_helping_limit_transformed
+            return (data + 1) / 2 * _diff + lower_normalization_limit_transformed
 
     def relative_to_specification_derivative(self, data, order=2):
 
-        lower_helping_limit_transformed = self.lower_helping_limit_transformed
-        upper_helping_limit_transformed = self.upper_helping_limit_transformed
+        lower_normalization_limit_transformed = self.lower_normalization_limit_transformed
+        upper_normalization_limit_transformed = self.upper_normalization_limit_transformed
 
         if order == 1:
-            lower_helping_limit_transformed = self.specification_to_boundaries[0]
-            upper_helping_limit_transformed = self.specification_to_boundaries[1]
+            lower_normalization_limit_transformed = self.specification_to_boundaries[0]
+            upper_normalization_limit_transformed = self.specification_to_boundaries[1]
 
-        if lower_helping_limit_transformed is None or upper_helping_limit_transformed is None:
+        if lower_normalization_limit_transformed is None or upper_normalization_limit_transformed is None:
             return np.ones_like(data)
-        _diff = upper_helping_limit_transformed - lower_helping_limit_transformed
+        _diff = upper_normalization_limit_transformed - lower_normalization_limit_transformed
         return np.ones_like(data) * 2 / _diff
 
     def do_transform(self, data):
