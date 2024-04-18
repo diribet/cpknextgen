@@ -7,10 +7,10 @@
         "lower_extreme": 0,
         "upper_specification": 5,
         "lower_specification": null,
-        "cp_point": 0.7390643846433022,
+        "cp_point": 0.7779625101508444,
         "cpk_point": 0.6442619177818262,
         "cp_interval": [
-            0.598664511802968, 0.8771574513974283
+            0.6301731703189136, 0.9233236330499246
         ],
         "cpk_interval": [
             0.4832466492046776, 0.8297711186090635
@@ -24,13 +24,13 @@
         "lower_extreme": null,
         "upper_specification": null,
         "lower_specification": null,
-        "cp_point": 0.9174806420902698,
-        "cpk_point": 0.8900819546150475,
+        "cp_point": null,
+        "cpk_point": null,
         "cp_interval": [
-            0.887194363613514, 0.9427359506150104
+            null, null
         ],
         "cpk_interval": [
-            0.8405973453916, 0.9347300390413612
+            null, null
         ]
     },
     "file2": {
@@ -41,13 +41,13 @@
         "lower_extreme": null,
         "upper_specification": null,
         "lower_specification": null,
-        "cp_point": 0.9497837630313125,
-        "cpk_point": 0.9377164313933667,
+        "cp_point": null,
+        "cpk_point": null,
         "cp_interval": [
-            0.9249809801729777, 0.969794085039375
+            null, null
         ],
         "cpk_interval": [
-            0.8992204301762253, 0.9558138796318074
+            null, null
         ]
     },
     "file3": {
@@ -58,13 +58,13 @@
         "lower_extreme": null,
         "upper_specification": null,
         "lower_specification": null,
-        "cp_point": 0.9387749890522236,
-        "cpk_point": 0.9370346049524391,
+        "cp_point": null,
+        "cpk_point": null,
         "cp_interval": [
-            0.9107872743326197, 0.9546946203150661
+            null, null
         ],
         "cpk_interval": [
-            0.898036794980549, 0.9507766246920243
+            null, null
         ]
     },
     "file4": {
@@ -75,13 +75,13 @@
         "lower_extreme": null,
         "upper_specification": null,
         "lower_specification": null,
-        "cp_point": 0.7970734087541129,
-        "cpk_point": 0.7714037988638052,
+        "cp_point": null,
+        "cpk_point": null,
         "cp_interval": [
-            0.7360110465791566, 0.8519749408260401
+            null, null
         ],
         "cpk_interval": [
-            0.6945428191317992, 0.8356869592504297
+            null, null
         ]
     },
     "file5": {
@@ -92,13 +92,13 @@
         "lower_extreme": null,
         "upper_specification": null,
         "lower_specification": null,
-        "cp_point": 0.9211464825554841,
-        "cpk_point": 0.9132856992482274,
+        "cp_point": null,
+        "cpk_point": null,
         "cp_interval": [
-            0.8691263205051115, 0.9500985531972047
+            null, null
         ],
         "cpk_interval": [
-            0.8262049157229612, 0.9409914799051392
+            null, null
         ]
     },
     "file6": {
@@ -518,13 +518,13 @@
         "lower_extreme": 0.0,
         "upper_specification": 3.0,
         "lower_specification": null,
-        "cp_point": 0.966926409329004,
-        "cpk_point": 0.7647967215827283,
+        "cp_point": 1.173725699185496,
+        "cpk_point": 1.1085722372776499,
         "cp_interval": [
-            0.7896707341997528, 1.0846915598833602
+            0.9585598507627056, 1.316677616043385
         ],
         "cpk_interval": [
-            0.6578626515453457, 0.8732636514900965
+            0.8074349909003752, 1.2750775664169742
         ]
     },
     "file32": {
@@ -671,10 +671,10 @@
         "lower_extreme": 0.0,
         "upper_specification": 0.005,
         "lower_specification": null,
-        "cp_point": 0.8748526766806985,
+        "cp_point": 0.8816344803758978,
         "cpk_point": 0.8274201703597795,
         "cp_interval": [
-            0.7930813341336042, 0.9559881029110178
+            0.7992292514524693, 0.9633988633987001
         ],
         "cpk_interval": [
             0.7238786470234051, 0.943536546912987
@@ -688,13 +688,13 @@
         "lower_extreme": 0.0,
         "upper_specification": 0.005,
         "lower_specification": null,
-        "cp_point": 0.8778016802464593,
+        "cp_point": 0.8810954951817181,
         "cpk_point": 0.8559880312867695,
         "cp_interval": [
-            0.7421922159536121, 0.9841342747006419
+            0.7449771773643199, 0.9878270862379801
         ],
         "cpk_interval": [
-            0.705825181206256, 0.9816136121005643
+            0.705825181206256, 0.9842921518319683
         ]
     },
     "file42": {
@@ -790,13 +790,13 @@
         "lower_extreme": 0.0,
         "upper_specification": 3.0,
         "lower_specification": null,
-        "cp_point": 0.9118873487747851,
-        "cpk_point": 0.7506433774033479,
+        "cp_point": 1.1053179985148909,
+        "cpk_point": 0.963854168461987,
         "cp_interval": [
-            0.6437090772660908, 1.1798914721108784
+            0.780253426989201, 1.4301714813465194
         ],
         "cpk_interval": [
-            0.6081375206942796, 0.8367746537109936
+            0.6376447850977279, 1.338359075145036
         ]
     },
     "file48": {
@@ -1079,13 +1079,13 @@
         "lower_extreme": 0.0,
         "upper_specification": 16.0,
         "lower_specification": null,
-        "cp_point": 1.833147220400195,
-        "cpk_point": 1.0208099175113001,
+        "cp_point": 1.8622447953271823,
+        "cpk_point": 2.156097862617731,
         "cp_interval": [
-            1.4004341217856222, 2.2591762758390788
+            1.4226632348298385, 2.2950362167254132
         ],
         "cpk_interval": [
-            0.9441882166317336, 1.0971650242638433
+            1.5377957421935347, 2.788993922092561
         ]
     },
     "file65": {
@@ -1215,13 +1215,13 @@
         "lower_extreme": 0.0,
         "upper_specification": 22.0,
         "lower_specification": null,
-        "cp_point": 2.101042633263419,
-        "cpk_point": 0.8121596648742511,
+        "cp_point": 2.282614218854085,
+        "cpk_point": 2.841681389462976,
         "cp_interval": [
-            1.327517216152977, 2.3870112849388594
+            1.4422409261908884, 2.593296210797773
         ],
         "cpk_interval": [
-            0.6588935963393909, 0.9520112330667378
+            1.564817729179688, 3.446424157791899
         ]
     },
     "file73": {
