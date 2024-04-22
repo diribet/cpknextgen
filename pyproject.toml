@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cpknextgen"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
 	{ name = "Stanislav Král", email = "stanislav.kral@diribet.cz" },
 	{ name = "Jaroslav Staněk", email = "jaroslav.stanek@diribet.cz" },
