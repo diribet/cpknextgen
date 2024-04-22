@@ -75,7 +75,7 @@ def py_digamma(x):
     return r + np.log(x) - 0.5 / x + t
 
 
-@njit
+@njit(cache=True)
 def find_hyper_parameters(r, data, prior_alpha, prior_beta, prior_m, prior_W, prior_v, n_of_components=20,
                           max_iterations=2000):
     """

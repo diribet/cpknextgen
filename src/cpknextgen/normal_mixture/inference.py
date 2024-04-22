@@ -5,7 +5,7 @@ from numba import njit
 from cpknextgen.custom_exceptions import InvalidDataError
 
 
-@njit
+@njit(cache=True)
 def calculate_quantiles(n_samples, cdf_space, cdf_values, weights_array, means_array, scales_array, z_grid_cdf):
     """
     Function is not part of a class, because numba doesn't know how to work with classes.
