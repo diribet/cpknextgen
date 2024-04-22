@@ -25,11 +25,12 @@ def run_data_test(file_index, test_data):
     lower_specification = current_set["lower_specification"]
 
     if error is not None:
-        try:
-            evaluate(data, specification_limits=(lower_specification, upper_specification),
-                     data_boundaries=(lower_extreme, upper_extreme), random_seed=0, samples=200)
-        except Exception as e:
-            assert str(e) == error
+        with pytest.raises(Exception, match=error):
+            evaluate(data,
+                     specification_limits=(lower_specification, upper_specification),
+                     data_boundaries=(lower_extreme, upper_extreme),
+                     random_seed=0,
+                     samples=200)
 
     else:
         cp_pointed_expected = current_set["cp_point"]
@@ -38,12 +39,10 @@ def run_data_test(file_index, test_data):
         cpk_interval = current_set["cpk_interval"]
 
         # Perform the evaluation on the dataset
-        result = evaluate(
-            np.array(data),
-            specification_limits=(lower_specification, upper_specification),
-            data_boundaries=(lower_extreme, upper_extreme),
-            random_seed=0
-        )
+        result = evaluate(np.array(data),
+                          specification_limits=(lower_specification, upper_specification),
+                          data_boundaries=(lower_extreme, upper_extreme),
+                          random_seed=0)
 
         # Assert the results
         assert_almost_equal(result.capability_index.cp.point, cp_pointed_expected, decimal=2)
@@ -83,4 +82,14 @@ def test_index_outliers(file_index):
 @pytest.mark.parametrize("file_index", [29])
 def test_index_heavy_tail(file_index):
     # Test the capability index calculation of different continuous data sets
+    run_data_test(file_index, test_data)
+
+
+@pytest.mark.parametrize("file_index", [8, 10, 178])
+def test_error_non_unique_values(file_index):
+    run_data_test(file_index, test_data)
+
+
+@pytest.mark.parametrize("file_index", [559, 560, 561])
+def test_error_not_enough_values(file_index):
     run_data_test(file_index, test_data)
