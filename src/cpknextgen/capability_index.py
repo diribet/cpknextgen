@@ -20,6 +20,7 @@ class ResultTypes:
         LOWER_MISSING = "Evaluation to Upper Specification only, c_pk = c_pk_upper"
         UPPER_MISSING = "Evaluation to Lower Specification only, c_pk = c_pk_lower"
         SPECIFICATIONS_MISSING = "Upper and Lower specifications missing"
+        EXTREMES = "Non-Standard Evaluation: Extremes as specification limits"
 
 
 class ProcessStats:
@@ -87,6 +88,9 @@ class CapabilityIndex:
         self.upper_boundary = upper_boundary
         self.lower_boundary = lower_boundary
 
+        self.standard_evaluation_cp = None
+        self.standard_evaluation_cpk = None
+
         self.cp = ProcessStats()
         self.cp_type = ""
         self.cpk = ProcessStats()
@@ -104,14 +108,23 @@ class CapabilityIndex:
 
         if None not in (specification_lower, specification_upper):
             self.cp, self.cp_type, self.cpk, self.cpk_type = self._standard()
+            self.standard_evaluation_cp = True
+            self.standard_evaluation_cpk = True
 
         elif specification_lower is None and specification_upper is not None:
             self.cp, self.cp_type, self.cpk, self.cpk_type = self._lower_specification_missing()
+            self.standard_evaluation_cp = False
+            self.standard_evaluation_cpk = True
 
         elif specification_lower is not None and specification_upper is None:
             self.cp, self.cp_type, self.cpk, self.cpk_type = self._upper_specification_missing()
+            self.standard_evaluation_cp = False
+            self.standard_evaluation_cpk = True
+
         else:
             self.cp, self.cp_type, self.cpk, self.cpk_type = self._specifications_missing()
+            self.standard_evaluation_cp = False
+            self.standard_evaluation_cpk = False
 
     @property
     def cpk_upper(self):
@@ -121,6 +134,12 @@ class CapabilityIndex:
                     sample=(self.specification_upper - self.process_center.sample) / (
                             self.process_high.sample - self.process_center.sample),
                     point=(self.specification_upper - self.process_center.point) / (
+                            self.process_high.point - self.process_center.point))
+            elif None not in [self.upper_boundary, self.process_center, self.process_high]:
+                self._cpk_upper = ProcessStats(
+                    sample=(self.upper_boundary - self.process_center.sample) / (
+                            self.process_high.sample - self.process_center.sample),
+                    point=(self.upper_boundary - self.process_center.point) / (
                             self.process_high.point - self.process_center.point))
         return self._cpk_upper
 
@@ -132,6 +151,13 @@ class CapabilityIndex:
                     sample=(self.process_center.sample - self.specification_lower) /
                            (self.process_center.sample - self.process_low.sample),
                     point=(self.process_center.point - self.specification_lower) /
+                    (self.process_center.point - self.process_low.point)
+                )
+            elif None not in [self.lower_boundary, self.process_center, self.process_low]:
+                self._cpk_lower = ProcessStats(
+                    sample=(self.process_center.sample - self.lower_boundary) /
+                           (self.process_center.sample - self.process_low.sample),
+                    point=(self.process_center.point - self.lower_boundary) /
                     (self.process_center.point - self.process_low.point)
                 )
         return self._cpk_lower
@@ -169,11 +195,15 @@ class CapabilityIndex:
             return cp, ResultTypes.Cp.UPPER_MISSING, cpk, cpk_type
 
     def _specifications_missing(self):
-        cpk = ProcessStats()
-        cpk_type = ResultTypes.Cpk.SPECIFICATIONS_MISSING
         if None not in (self.lower_boundary, self.upper_boundary):
             cp = self._get_cp(lower_limit=self.lower_boundary, upper_limit=self.upper_boundary)
+            cpk = ProcessStats(sample=np.minimum(self.cpk_lower.sample, self.cpk_upper.sample),
+                               point=np.minimum(self.cpk_lower.point, self.cpk_upper.point))
+            cpk_type = ResultTypes.Cpk.EXTREMES
             return cp, ResultTypes.Cp.EXTREMES, cpk, cpk_type
         else:
             cp = ProcessStats()
+            cpk = ProcessStats()
+            cpk_type = ResultTypes.Cpk.SPECIFICATIONS_MISSING
+
             return cp, ResultTypes.Cp.SPECIFICATIONS_MISSING, cpk, cpk_type
