@@ -33,7 +33,7 @@ class GraphicsResult:
 
 
 def get_results_graphics(raw_measured_data,
-                         trans_instance: Transformation,
+                         transformation: Transformation,
                          mixtures: MixtureDistributions,
                          point_mixture: MixtureDistributions,
                          boundary_probabilities: np.ndarray,
@@ -69,10 +69,10 @@ def get_results_graphics(raw_measured_data,
                                                       axis=0)
 
     with np.errstate(invalid="ignore"):  # ignore "invalid value" warnings; result array can contain NaN
-        ecdf_lower_error = trans_instance.do_inverse_transform(mixture_model_cdf_samples_x_low)
-        median_sample_cdf = trans_instance.do_inverse_transform(mixture_model_cdf_samples_x_median)
-        ecdf_upper_error = trans_instance.do_inverse_transform(mixture_model_cdf_samples_x_high)
-        ecdf_point_error = trans_instance.do_inverse_transform(point_mixture.percentile_samples)
+        ecdf_lower_error = transformation.complete_transformation_inverse(mixture_model_cdf_samples_x_low)
+        median_sample_cdf = transformation.complete_transformation_inverse(mixture_model_cdf_samples_x_median)
+        ecdf_upper_error = transformation.complete_transformation_inverse(mixture_model_cdf_samples_x_high)
+        ecdf_point_error = transformation.complete_transformation_inverse(point_mixture.percentile_samples)
 
     grid_to_plot = mixtures.z_grid.copy()
     median_sample_cdf_to_plot = median_sample_cdf.copy()
@@ -108,35 +108,35 @@ def get_results_graphics(raw_measured_data,
     upper_bound_estimated = np.max(median_sample_cdf_to_plot)
 
     how_many_points = 202
-    if trans_instance.upper_boundary is not None and trans_instance.lower_boundary is not None:
-        y = trans_instance.do_transform(
-            np.linspace(trans_instance.lower_boundary, trans_instance.upper_boundary,
+    if transformation.upper_boundary is not None and transformation.lower_boundary is not None:
+        y = transformation.complete_transformation(
+            np.linspace(transformation.lower_boundary, transformation.upper_boundary,
                         how_many_points)[1:-1])
-    elif trans_instance.upper_boundary is not None:
-        y = trans_instance.do_transform(np.linspace(lower_bound_estimated,
-                                                    trans_instance.upper_boundary, how_many_points)[1:-1])
-    elif trans_instance.lower_boundary is not None:
-        y = trans_instance.do_transform(
-            np.linspace(trans_instance.lower_boundary, upper_bound_estimated,
+    elif transformation.upper_boundary is not None:
+        y = transformation.complete_transformation(np.linspace(lower_bound_estimated,
+                                                               transformation.upper_boundary, how_many_points)[1:-1])
+    elif transformation.lower_boundary is not None:
+        y = transformation.complete_transformation(
+            np.linspace(transformation.lower_boundary, upper_bound_estimated,
                         how_many_points)[1:-1])
     else:
-        y = trans_instance.do_transform(
+        y = transformation.complete_transformation(
             np.linspace(lower_bound_estimated, upper_bound_estimated, how_many_points)[1:-1])
 
     result1 = mixture_of_normals_density(point_mixture.weights_samples, point_mixture.means_samples,
                                          point_mixture.scales_samples, y)
 
-    y2 = trans_instance.do_inverse_transform(y, order=1)
-    result2 = trans_instance.relative_to_specification_derivative(y2)
+    y2 = transformation.complete_transformation_inverse(y, order=1)
+    result2 = transformation.normalisation_transformation_derivative(y2)
 
-    y3 = trans_instance.do_inverse_transform(y, order=2)
-    result3 = trans_instance.yeojohnson.derivative_transform(y3)
+    y3 = transformation.complete_transformation_inverse(y, order=2)
+    result3 = transformation.yeojohnson.derivative_transform(y3)
 
-    y4 = trans_instance.do_inverse_transform(y, order=3)
-    result4 = trans_instance.relative_to_specification_derivative(y4, order=1)
+    y4 = transformation.complete_transformation_inverse(y, order=3)
+    result4 = transformation.normalisation_transformation_derivative(y4, order=1)
 
-    original_axis_x = trans_instance.do_inverse_transform(y, order=4)
-    result5 = trans_instance.relative_to_boundaries_derivative(original_axis_x)
+    original_axis_x = transformation.complete_transformation_inverse(y, order=4)
+    result5 = transformation.boundaries_transformation_derivative(original_axis_x)
 
     density_y = result1 * (result2 * result3 * result4 * result5)
 

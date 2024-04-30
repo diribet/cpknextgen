@@ -292,22 +292,22 @@ def evaluate(
         point_process_low = point_mixture.low_quantile_samples
         sample_process_low = mixtures.low_quantile_samples
     else:
-        point_process_low = t.do_inverse_transform(point_mixture.low_quantile_samples)
-        sample_process_low = t.do_inverse_transform(mixtures.low_quantile_samples)
+        point_process_low = t.complete_transformation_inverse(point_mixture.low_quantile_samples)
+        sample_process_low = t.complete_transformation_inverse(mixtures.low_quantile_samples)
 
     if point_mixture.high_quantile_samples in boundary_data:
         point_process_high = point_mixture.high_quantile_samples
         sample_process_high = mixtures.high_quantile_samples
     else:
-        point_process_high = t.do_inverse_transform(point_mixture.high_quantile_samples)
-        sample_process_high = t.do_inverse_transform(mixtures.high_quantile_samples)
+        point_process_high = t.complete_transformation_inverse(point_mixture.high_quantile_samples)
+        sample_process_high = t.complete_transformation_inverse(mixtures.high_quantile_samples)
 
     if point_mixture.median_samples in boundary_data:
         point_process_center = point_mixture.median_samples
         sample_process_center = mixtures.median_samples
     else:
-        point_process_center = t.do_inverse_transform(point_mixture.median_samples)
-        sample_process_center = t.do_inverse_transform(mixtures.median_samples)
+        point_process_center = t.complete_transformation_inverse(point_mixture.median_samples)
+        sample_process_center = t.complete_transformation_inverse(mixtures.median_samples)
 
     ProcessStats.confidence = confidence
 
@@ -320,8 +320,8 @@ def evaluate(
         process_low=ProcessStats(sample=sample_process_low, point=point_process_low),
         process_high=ProcessStats(sample=sample_process_high, point=point_process_high),
         process_center=ProcessStats(sample=sample_process_center, point=point_process_center),
-        specification_lower=t.lower_specification,
-        specification_upper=t.upper_specification,
+        specification_lower=_specification_limits[0],
+        specification_upper=_specification_limits[1],
         lower_boundary=data_boundaries[0],
         upper_boundary=data_boundaries[1])
 
