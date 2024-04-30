@@ -229,18 +229,18 @@ class Transformation:
             if len(np.unique(data)) > 1:
                 if lower_specification_limit is None:
                     if lower_boundary is None:
-                        lower_normalization_limit = np.min([lower_normalization_limit, upper_normalization_limit]) - np.min(
-                            np.diff(np.sort(np.unique(data))))
+                        lower_normalization_limit = (np.min([lower_normalization_limit, upper_normalization_limit]) -
+                                                     np.min(np.diff(np.sort(np.unique(data)))))
                     else:
-                        lower_normalization_limit = np.max([np.min([lower_normalization_limit, upper_normalization_limit]) - np.min(
-                            np.diff(np.sort(np.unique(data)))), lower_boundary])
+                        lower_normalization_limit = np.max([np.min([lower_normalization_limit, upper_normalization_limit]) -
+                                                            np.min(np.diff(np.sort(np.unique(data)))), lower_boundary])
                 if upper_specification_limit is None:
                     if upper_boundary is None:
-                        upper_normalization_limit = np.max([lower_normalization_limit, upper_normalization_limit]) + np.min(
-                            np.diff(np.sort(np.unique(data))))
+                        upper_normalization_limit = (np.max([lower_normalization_limit, upper_normalization_limit]) +
+                                                     np.min(np.diff(np.sort(np.unique(data)))))
                     else:
-                        upper_normalization_limit = np.min([np.max([lower_normalization_limit, upper_normalization_limit]) + np.min(
-                            np.diff(np.sort(np.unique(data)))), upper_boundary])
+                        upper_normalization_limit = np.min([np.max([lower_normalization_limit, upper_normalization_limit]) +
+                                                            np.min(np.diff(np.sort(np.unique(data)))), upper_boundary])
 
         return np.array([lower_normalization_limit, upper_normalization_limit]), standard_computation
 
