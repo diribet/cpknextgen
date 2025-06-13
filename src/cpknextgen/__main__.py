@@ -317,9 +317,9 @@ def evaluate(
                                                      data_boundaries)
 
     evaluation_result.capability_index = CapabilityIndex(
-        process_low=ProcessStats(sample=sample_process_low, point=point_process_low),
-        process_high=ProcessStats(sample=sample_process_high, point=point_process_high),
-        process_center=ProcessStats(sample=sample_process_center, point=point_process_center),
+        process_low=ProcessStats(sample=sample_process_low, point=point_process_low[0]),
+        process_high=ProcessStats(sample=sample_process_high, point=point_process_high[0]),
+        process_center=ProcessStats(sample=sample_process_center, point=point_process_center[0]),
         specification_lower=_specification_limits[0],
         specification_upper=_specification_limits[1],
         lower_boundary=data_boundaries[0],
