@@ -21,10 +21,10 @@ classifiers = [
 	"Operating System :: OS Independent",
 	"Intended Audience :: Manufacturing",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
-	'numpy>=1.21,<1.27',
-	'scipy>=1.10,<1.15',
+	'numpy>=1.21,<2.4',
+	'scipy>=1.10,<1.16',
 	'numba>=0.55.0',
 	'scikit-learn>=1.0'
 ]
