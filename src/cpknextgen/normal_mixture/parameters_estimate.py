@@ -249,7 +249,7 @@ class VariationalMixture:
         """
         r = None
         if self.r_option == 'random':
-            r = np.random.uniform(size=(len(self.data), self.max_kernels))
+            r = self._rng.uniform(size=(len(self.data), self.max_kernels))
             r /= r.sum(axis=1)[:, np.newaxis]
 
         if self.r_option == 'quantile':
@@ -278,9 +278,7 @@ class VariationalMixture:
 
         if self.r_option == "random_from_data":
             r = np.zeros((len(self.data), self.max_kernels))
-            indices = np.random.choice(
-                len(self.data), size=self.max_kernels, replace=False
-            )
+            indices = self._rng.choice(len(self.data), size=self.max_kernels, replace=False)
             r[indices, np.arange(self.max_kernels)] = 1
 
         if self.r_option == "kmeanplusplus":
